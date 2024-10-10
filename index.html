@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overlay Satellite Data</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+   
+    var overlay;
+
+    function fetchSatelliteData(lat, lon) {
+      var apiKey = 'gv3D3PQfbGSUVz1WCJrNVlZpQVrH9lFalplR7be4'; 
+      var date = new Date().toISOString().split('T')[0];
+
+      var apiUrl = `https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&dim=0.1&date=${date}&api_key=${apiKey}`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.url) {
+            var imageUrl = data.url;  
+            if (overlay) {
+              map.removeLayer(overlay);
+            }
+            var imageBounds = [[lat - 0.1, lon - 0.1], [lat + 0.1, lon + 0.1]]; 
+            overlay = L.imageOverlay(imageUrl, imageBounds, { opacity: 0.7 });
+            overlay.addTo(map);
+          } else {
+            console.log('No image data available for the given date.');
+          }
+        })
+        .catch(err => console.log('Error fetching satellite data:', err));
+    }
+
+    function fetchWeatherData(lat, lon) {
+      var weatherApiKey = '5fb3f9fe062384b079f52fbb76862f31';
+      var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;
+
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          if (data.main && data.weather) {
+            var weatherInfo = `Temperature: ${data.main.temp}°C<br>Weather: ${data.weather[0].description}`;
+            L.marker([lat, lon]).addTo(map)
+              .bindPopup(weatherInfo)
+              .openPopup();
+          } else {
+            console.log('Weather data format is incorrect or not available.');
+          }
+        })
+        .catch(err => console.log('Error fetching weather data:', err));
+    }
+
+    function updateMap() {
+      navigator.geolocation.getCurrentPosition((position) => {
+        var latitude = position.coords.latitude; 
+        var longitude = position.coords.longitude; 
+
+        map.setView([latitude, longitude], 10);
+        
+        fetchSatelliteData(latitude, longitude);
+        fetchWeatherData(latitude, longitude);
+      }, (error) => {
+        console.error('Error getting location:', error);
+      });
+    }
+
+    updateMap();
+    setInterval(updateMap, 900000);
+
+  </script>
+</body>
+</html>

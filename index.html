@@ -10,32 +10,59 @@
       height: 100vh;
       width: 100%;
     }
+    #weather-animation {
+      position: absolute;
+      top: 20px;
+      right: 20px; /* Adjusted position to the right */
+      z-index: 1000;
+      width: 100px;
+      height: 100px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
+  <div id="weather-animation"></div>
+
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script>
+   
+
+    
     var map = L.map('map').setView([20, 0], 2);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-   
+//openstreetmap view     
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+//mapbox view
+
+// L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFuYW50ZWxyYW5kaGUiLCJhIjoiY20yM2VqYXZkMDVpejJxczZmbnBnOWRybSJ9.USukI7AK5sGl0RXTdA_LtA', {
+//       id: 'mapbox/satellite-v9',
+//       tileSize: 512,
+//       zoomOffset: -1,
+//       maxZoom: 18,
+//       attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a>'
+//     }).addTo(map);
+
+
     var overlay;
 
     function fetchSatelliteData(lat, lon) {
       var apiKey = 'gv3D3PQfbGSUVz1WCJrNVlZpQVrH9lFalplR7be4'; 
       var date = new Date().toISOString().split('T')[0];
-
       var apiUrl = `https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&dim=0.1&date=${date}&api_key=${apiKey}`;
 
       fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
           if (data.url) {
-            var imageUrl = data.url;  
+            var imageUrl = data.url;
             if (overlay) {
               map.removeLayer(overlay);
             }
@@ -43,14 +70,14 @@
             overlay = L.imageOverlay(imageUrl, imageBounds, { opacity: 0.7 });
             overlay.addTo(map);
           } else {
-            console.log('No image data available for the given date.');
+            console.log('No satellite image data available for the given date.');
           }
         })
         .catch(err => console.log('Error fetching satellite data:', err));
     }
 
     function fetchWeatherData(lat, lon) {
-      var weatherApiKey = '5fb3f9fe062384b079f52fbb76862f31';
+      var weatherApiKey = '5fb3f9fe062384b079f52fbb76862f31'; 
       var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;
 
       fetch(apiUrl)
@@ -61,12 +88,26 @@
           return response.json();
         })
         .then(data => {
-          console.log(data);
+          console.log(data); // Log the full response for debugging
           if (data.main && data.weather) {
-            var weatherInfo = `Temperature: ${data.main.temp}°C<br>Weather: ${data.weather[0].description}`;
+            var weatherInfo = `
+              <strong>Weather Details:</strong><br>
+              Temperature: ${data.main.temp}°C<br>
+              Weather: ${data.weather[0].description}<br>
+              Humidity: ${data.main.humidity}%<br>
+              Wind Speed: ${data.wind.speed} m/s<br>
+              Pressure: ${data.main.pressure} hPa
+            `;
             L.marker([lat, lon]).addTo(map)
               .bindPopup(weatherInfo)
               .openPopup();
+
+            var weatherCondition = data.weather[0].icon;
+            var weatherGifUrl = getWeatherGifUrl(weatherCondition);
+
+            if (weatherGifUrl) {
+              displayWeatherAnimation(weatherGifUrl);
+            }
           } else {
             console.log('Weather data format is incorrect or not available.');
           }
@@ -74,13 +115,37 @@
         .catch(err => console.log('Error fetching weather data:', err));
     }
 
+    function getWeatherGifUrl(icon) {
+      var gifMap = {
+        "01d": "weather-gifs/sunny-day.gif",
+        "01n": "weather-gifs/night.gif",
+        "02d": "weather-gifs/sunny-day.gif",
+        "02n": "weather-gifs/night.gif",
+        "03d": "weather-gifs/mist.gif",
+        "04d": "weather-gifs/mist.gif",
+        "09d": "weather-gifs/day-rainy.gif",
+        "10d": "weather-gifs/rainy-thunder-day.gif",
+        "10n": "weather-gifs/night-rainy.gif",
+        "11d": "weather-gifs/rainy-thunder-day.gif",
+        "13d": "weather-gifs/mist.gif",
+        "50d": "weather-gifs/mist.gif",
+      };
+
+      return gifMap[icon] ? gifMap[icon] : null;
+    }
+
+    function displayWeatherAnimation(gifUrl) {
+      var weatherAnimationDiv = document.getElementById('weather-animation');
+      weatherAnimationDiv.style.backgroundImage = `url(${gifUrl})`;
+    }
+
     function updateMap() {
       navigator.geolocation.getCurrentPosition((position) => {
-        var latitude = position.coords.latitude; 
-        var longitude = position.coords.longitude; 
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
 
         map.setView([latitude, longitude], 10);
-        
+
         fetchSatelliteData(latitude, longitude);
         fetchWeatherData(latitude, longitude);
       }, (error) => {
@@ -89,8 +154,7 @@
     }
 
     updateMap();
-    setInterval(updateMap, 900000);
-
+    setInterval(updateMap, 900000); // Update every 15 minutes
   </script>
 </body>
 </html>

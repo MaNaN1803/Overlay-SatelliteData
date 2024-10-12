@@ -285,16 +285,11 @@
       function (position) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
-
-        // Set the map view to the user's current location
         map.setView([lat, lon], 10);
-
-        // Fetch satellite and weather data for the current location
         fetchSatelliteData(lat, lon);
         fetchWeatherData(lat, lon);
       },
       function (error) {
-        // Handle the case where the user denies location access
         if (error.code === error.PERMISSION_DENIED) {
           alert("Please enable location access in your browser settings to see your current location.");
         } else {

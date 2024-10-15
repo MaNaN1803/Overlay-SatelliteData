@@ -129,12 +129,25 @@
       "Rain": L.tileLayer(`https://tile.openweathermap.org/map/rain_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31`, {
         attribution: 'Weather data &copy; OpenWeatherMap',
         opacity: 0.8
-      })
+      }),
+      "Clouds": L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31`, {
+    attribution: 'Weather data &copy; OpenWeatherMap',
+    opacity: 1.0,
+    className: 'cloud-layer'
+  }),
+  "GOES Clouds": L.tileLayer(`https://goes17-abi-cdn.unl.edu/GOES17/ABI/CONUS_Regional/{z}/{x}/{y}.png`, {
+                attribution: 'Satellite data &copy; NASA',
+                opacity: 0.8,
+                className: 'nasa-goes-cloud-layer'
+            })
     };
     const style = document.createElement('style');
 style.textContent = `
   .dark-wind-layer {
     filter: hue-rotate(100deg) brightness(0.5) contrast(1.5); /* Adjust brightness and contrast as needed */
+  }
+  .cloud-layer {
+  filter: brightness(2.2) hue-rotate(100deg) saturate(0.5);
   }
 `;
 document.head.appendChild(style);
@@ -142,12 +155,14 @@ document.head.appendChild(style);
     weatherLayers["Precipitation"].addTo(map);
 
     L.control.layers(null, weatherLayers, {collapsed: false}).addTo(map);
+    
 
     var overlay;
     function fetchSatelliteData(lat, lon) {
       var apiKey = 'gv3D3PQfbGSUVz1WCJrNVlZpQVrH9lFalplR7be4';
       var date = new Date().toISOString().split('T')[0];
-      var apiUrl = `https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&dim=0.1&date=${date}&api_key=${apiKey}`;
+      var dim= 0.1
+      var apiUrl = `https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&dim=${dim}&date=${date}&api_key=${apiKey}`;
 
       fetch(apiUrl)
         .then(response => response.json())
@@ -166,6 +181,7 @@ document.head.appendChild(style);
         })
         .catch(err => console.log('Error fetching satellite data:', err));
     }
+   
     function fetchWeatherData(lat, lon) {
       var weatherApiKey = '5fb3f9fe062384b079f52fbb76862f31';
       var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;
@@ -232,7 +248,11 @@ document.head.appendChild(style);
       };
       return gifMap[icon] || null;
     }
+    function refreshCloudLayer() {
+  weatherLayers["Clouds"].setUrl(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${new Date().getTime()}`);
+}
 
+setInterval(refreshCloudLayer, 15000);
     function displayWeatherAnimation(gifUrl) {
       const weatherAnimationDiv = document.getElementById('weather-animation');
       weatherAnimationDiv.style.backgroundImage = `url(${gifUrl})`;

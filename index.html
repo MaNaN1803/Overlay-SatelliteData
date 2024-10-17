@@ -10,6 +10,40 @@
       height: 100vh;
       width: 100%;
     }
+    #timeControl {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+    }
+
+    #timeControl select {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 16px;
+      margin: 0 5px;
+      appearance: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    #timeControl button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
     #weather-animation {
       position: absolute;
       bottom: 10px;
@@ -20,145 +54,138 @@
       background-size: contain;
       background-repeat: no-repeat;
     }
-
-
-    .rain {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: transparent;
-      overflow: hidden;
-      z-index: 500;
-    }
-
-    .drop {
-      position: absolute;
-      width: 2px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.6);
-      bottom: 100%;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(100vh);
-      }
-    }
-    .wind {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: transparent;
-      z-index: 400;
-      overflow: hidden;
-    }
-
-    .gust {
-      position: absolute;
-      width: 100px;
-      height: 5px;
-      background: rgba(200, 200, 200, 0.5);
-      top: -100px;
-      border-radius: 50%;
-      animation: gust 5s linear infinite;
-    }
-
-    @keyframes gust {
-      0% {
-        left: -50px;
-        top: 0;
-        opacity: 0;
-      }
-      50% {
-        left: 50vw;
-        opacity: 1;
-      }
-      100% {
-        left: 100vw;
-        opacity: 0;
-      }
-    }
-    .live-weather {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.8);
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
   </style>
 </head>
 <body>
   <div id="map"></div>
-  <div id="weather-animation"></div>
-  <div class="live-weather" id="live-weather-info"></div>
+  <div id="timeControl">
+    <button id="playPauseButton">&#9658;</button>
+    <select id="daySelector"></select>
+    <select id="hourSelector"></select> : 
+    <select id="minuteSelector"></select>
+  </div>
 
-  <div class="rain" id="rain-animation"></div>
- 
-  <div class="wind" id="wind-animation"></div>
+  <div id="weather-animation"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script>
-
     var map = L.map('map').setView([20, 0], 2);
 
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //   maxZoom: 19,
-    //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(map);
     L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
-            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-        }).addTo(map);
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    }).addTo(map);
+
+    var cloudLayer = L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${new Date().getTime()}`, {
+      attribution: 'Weather data &copy; OpenWeatherMap',
+      opacity: 1.0
+    }).addTo(map);
+
+    var isPlaying = false;
+    var currentTime = new Date();
+    // var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 0, 0, 0);
+    var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 12, 0, 0);
+
+    var timeStep = 15 * 60 * 1000;
+    var timer;
+
+    function updateCloudLayer() {
+  let selectedDay = new Date(document.getElementById('daySelector').value);
+  let selectedHour = parseInt(document.getElementById('hourSelector').value);
+  let selectedMinute = parseInt(document.getElementById('minuteSelector').value);
+
+  selectedDay.setHours(selectedHour, selectedMinute, 0);
+  let timestamp = selectedDay.getTime();
+  
+  cloudLayer.setUrl(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${timestamp}`);
+}
+
+function updateTimeSelectors() {
+  let hours = currentTime.getHours().toString().padStart(2, '0');
+  let minutes = currentTime.getMinutes().toString().padStart(2, '0');
+  
+  document.getElementById('hourSelector').value = hours;
+  document.getElementById('minuteSelector').value = minutes;
+}
+
+
+function playAnimation() {
+  if (isPlaying) {
+    clearInterval(timer);
+    isPlaying = false;
+    document.getElementById('playPauseButton').innerHTML = "&#9658;"; 
+  } else {
+    isPlaying = true;
+    document.getElementById('playPauseButton').innerHTML = "&#10074;&#10074;";
+
+    // Set start time to either midnight or noon (uncomment one of the following lines)
+    // var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 0, 0, 0);
+
+    var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 12, 0, 0);
+
+    currentTime = startTime;
+
+    timer = setInterval(function () {
+    currentTime = new Date(currentTime.getTime() + timeStep);
+      if (currentTime > new Date()) {
+        currentTime = startTime;
+      }
+
+      updateCloudLayer();
+
+      updateTimeSelectors();
+    }, 2000); 
+  }
+}
+
+    document.getElementById('playPauseButton').addEventListener('click', playAnimation);
+
+    function populateSelectors() {
+      var daySelector = document.getElementById('daySelector');
+      var hourSelector = document.getElementById('hourSelector');
+      var minuteSelector = document.getElementById('minuteSelector');
+
+      for (let i = 0; i < 24; i++) {
+        let option = document.createElement('option');
+        option.value = i;
+        option.text = i.toString().padStart(2, '0');
+        hourSelector.appendChild(option);
+      }
+
+      for (let i = 0; i < 60; i += 15) { 
+        let option = document.createElement('option');
+        option.value = i;
+        option.text = i.toString().padStart(2, '0');
+        minuteSelector.appendChild(option);
+      }
+
+      for (let i = 0; i < 2; i++) {
+        let option = document.createElement('option');
+        let day = new Date();
+        day.setDate(day.getDate() - i);
+        option.value = day.toISOString().split('T')[0];
+        option.text = day.toDateString().split(' ').slice(0, 3).join(' ');
+        daySelector.appendChild(option);
+      }
+    }
+    populateSelectors();
+
+    document.getElementById('daySelector').addEventListener('change', updateCloudLayer);
+    document.getElementById('hourSelector').addEventListener('change', updateCloudLayer);
+    document.getElementById('minuteSelector').addEventListener('change', updateCloudLayer);
+
+    const style = document.createElement('style');
+    style.textContent = `
+      .cloud-layer {
+        filter: brightness(2.2) contrast(1.5) hue-rotate(100deg) saturate(0.5);
+      }
+    `;
+    document.head.appendChild(style);
 
     var weatherLayers = {
-      "Precipitation": L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31`, {
-        attribution: 'Weather data &copy; OpenWeatherMap',
-        opacity: 0.8
-      }),
-      "Wind Speed": L.tileLayer(`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31`, {
-        attribution: 'Weather data &copy; OpenWeatherMap',
-        opacity: 1.9,
-        className: 'dark-wind-layer'
-      }),
-      "Temperature": L.tileLayer(`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31`, {
-        attribution: 'Weather data &copy; OpenWeatherMap',
-        opacity: 0.8
-      }),
-      "Rain": L.tileLayer(`https://tile.openweathermap.org/map/rain_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31`, {
-        attribution: 'Weather data &copy; OpenWeatherMap',
-        opacity: 0.8
-      }),
-      "Clouds": L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31`, {
-    attribution: 'Weather data &copy; OpenWeatherMap',
-    opacity: 1.0,
-    className: 'cloud-layer'
-  }),
-  "GOES Clouds": L.tileLayer(`https://goes17-abi-cdn.unl.edu/GOES17/ABI/CONUS_Regional/{z}/{x}/{y}.png`, {
-                attribution: 'Satellite data &copy; NASA',
-                opacity: 0.8,
-                className: 'nasa-goes-cloud-layer'
-            })
+      "Cloud Layer": cloudLayer
     };
-    const style = document.createElement('style');
-style.textContent = `
-  .dark-wind-layer {
-    filter: hue-rotate(100deg) brightness(0.5) contrast(1.5); /* Adjust brightness and contrast as needed */
-  }
-  .cloud-layer {
-  filter: brightness(2.2) contrast(1.5) hue-rotate(100deg) saturate(0.5);
-  }
-`;
-document.head.appendChild(style);
-
-    weatherLayers["Precipitation"].addTo(map);
 
     L.control.layers(null, weatherLayers, {collapsed: false}).addTo(map);
-    
 
     var overlay;
     function fetchSatelliteData(lat, lon) {
@@ -184,132 +211,22 @@ document.head.appendChild(style);
         })
         .catch(err => console.log('Error fetching satellite data:', err));
     }
-   
-    function fetchWeatherData(lat, lon) {
-      var weatherApiKey = '5fb3f9fe062384b079f52fbb76862f31';
-      var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;
-
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          if (data.main && data.weather) {
-            var weatherInfo = `
-              <strong>Weather Details:</strong><br>
-              Temperature: ${data.main.temp}°C<br>
-              Weather: ${data.weather[0].description}<br>
-              Humidity: ${data.main.humidity}%<br>
-              Wind Speed: ${data.wind.speed} m/s<br>
-              Pressure: ${data.main.pressure} hPa
-            `;
-            L.marker([lat, lon]).addTo(map)
-              .bindPopup(weatherInfo)
-              .openPopup();
-
-            var weatherCondition = data.weather[0].icon;
-            var weatherGifUrl = getWeatherGifUrl(weatherCondition);
-
-            if (weatherGifUrl) {
-              displayWeatherAnimation(weatherGifUrl);
-            }
-
-            if (data.weather[0].main.toLowerCase().includes('rain')) {
-              startRainAnimation();
-            } else {
-              stopRainAnimation();
-            }
-
-            if (data.wind.speed > 5) {
-              startWindAnimation();
-            } else {
-              stopWindAnimation();
-            }
-
-            document.getElementById('live-weather-info').innerHTML = weatherInfo;
-          } else {
-            console.log('Weather data format is not available.');
-          }
-        })
-        .catch(err => console.log('Error fetching weather data:', err));
-    }
-
-  
-    function getWeatherGifUrl(icon) {
-      var gifMap = {
-        "01d": "weather-gifs/sunny-day.gif",
-        "01n": "weather-gifs/night.gif",
-        "02d": "weather-gifs/sunny-day.gif",
-        "02n": "weather-gifs/night.gif",
-        "03d": "weather-gifs/mist.gif",
-        "04d": "weather-gifs/mist.gif",
-        "09d": "weather-gifs/day-rainy.gif",
-        "10d": "weather-gifs/rainy-thunder-day.gif",
-        "10n": "weather-gifs/night-rainy.gif",
-        "11d": "weather-gifs/rainy-thunder-day.gif",
-        "13d": "weather-gifs/snow.gif",
-        "50d": "weather-gifs/mist.gif"
-      };
-      return gifMap[icon] || null;
-    }
-    function refreshCloudLayer() {
+        function refreshCloudLayer() {
   weatherLayers["Clouds"].setUrl(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${new Date().getTime()}`);
 }
-//set range on play incre time +15 min 00 00:15 till curr time 
-setInterval(refreshCloudLayer, 1000);
-    function displayWeatherAnimation(gifUrl) {
-      const weatherAnimationDiv = document.getElementById('weather-animation');
-      weatherAnimationDiv.style.backgroundImage = `url(${gifUrl})`;
-      weatherAnimationDiv.style.display = 'block';
-    }
 
-    function startRainAnimation() {
-      const rainAnimationDiv = document.getElementById('rain-animation');
-      rainAnimationDiv.innerHTML = '';
-      for (let i = 0; i < 100; i++) {
-        const drop = document.createElement('div');
-        drop.className = 'drop';
-        drop.style.left = `${Math.random() * 100}vw`;
-        drop.style.animationDuration = `${Math.random() * 2 + 1}s`;
-        rainAnimationDiv.appendChild(drop);
-      }
-    }
+setInterval(refreshCloudLayer, 15000);
 
-    function stopRainAnimation() {
-      const rainAnimationDiv = document.getElementById('rain-animation');
-      rainAnimationDiv.innerHTML = '';
-    }
-
-    function startWindAnimation() {
-      const windAnimationDiv = document.getElementById('wind-animation');
-      windAnimationDiv.innerHTML = '';
-      for (let i = 0; i < 5; i++) {
-        const gust = document.createElement('div');
-        gust.className = 'gust';
-        gust.style.left = `${Math.random() * 100}vw`;
-        gust.style.animationDuration = `${Math.random() * 2 + 3}s`;
-        windAnimationDiv.appendChild(gust);
-      }
-    }
-
-    function stopWindAnimation() {
-      const windAnimationDiv = document.getElementById('wind-animation');
-      windAnimationDiv.innerHTML = '';
-    }
-
-    var initialLat = 20;
-    var initialLon = 0;
+    var initialLat = 28.6139;
+    var initialLon = 77.2090;
 
     fetchSatelliteData(initialLat, initialLon);
-    fetchWeatherData(initialLat, initialLon);
 
     map.on('click', function (e) {
       fetchSatelliteData(e.latlng.lat, e.latlng.lng);
-      fetchWeatherData(e.latlng.lat, e.latlng.lng);
+    
     });
 
-    window.onload = () => {
-      fetchWeatherData(initialLat, initialLon);
-    };
     function initMap() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -318,7 +235,6 @@ setInterval(refreshCloudLayer, 1000);
         var lon = position.coords.longitude;
         map.setView([lat, lon], 10);
         fetchSatelliteData(lat, lon);
-        fetchWeatherData(lat, lon);
       },
       function (error) {
         if (error.code === error.PERMISSION_DENIED) {
@@ -336,8 +252,6 @@ setInterval(refreshCloudLayer, 1000);
 window.onload = () => {
   initMap();
 };
-
-
   </script>
 </body>
 </html>

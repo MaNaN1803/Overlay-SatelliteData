@@ -98,7 +98,6 @@
   
   cloudLayer.setUrl(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${timestamp}`);
 }
-
 function updateTimeSelectors() {
   let hours = currentTime.getHours().toString().padStart(2, '0');
   let minutes = currentTime.getMinutes().toString().padStart(2, '0');
@@ -106,7 +105,6 @@ function updateTimeSelectors() {
   document.getElementById('hourSelector').value = hours;
   document.getElementById('minuteSelector').value = minutes;
 }
-
 
 function playAnimation() {
   if (isPlaying) {
@@ -138,7 +136,6 @@ function playAnimation() {
 }
 
     document.getElementById('playPauseButton').addEventListener('click', playAnimation);
-
     function populateSelectors() {
       var daySelector = document.getElementById('daySelector');
       var hourSelector = document.getElementById('hourSelector');

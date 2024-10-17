@@ -107,10 +107,13 @@
 
     var map = L.map('map').setView([20, 0], 2);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //   maxZoom: 19,
+    //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(map);
+    L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        }).addTo(map);
 
     var weatherLayers = {
       "Precipitation": L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31`, {
@@ -147,7 +150,7 @@ style.textContent = `
     filter: hue-rotate(100deg) brightness(0.5) contrast(1.5); /* Adjust brightness and contrast as needed */
   }
   .cloud-layer {
-  filter: brightness(2.2) hue-rotate(100deg) saturate(0.5);
+  filter: brightness(2.2) contrast(1.5) hue-rotate(100deg) saturate(0.5);
   }
 `;
 document.head.appendChild(style);
@@ -251,8 +254,8 @@ document.head.appendChild(style);
     function refreshCloudLayer() {
   weatherLayers["Clouds"].setUrl(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${new Date().getTime()}`);
 }
-
-setInterval(refreshCloudLayer, 15000);
+//set range on play incre time +15 min 00 00:15 till curr time 
+setInterval(refreshCloudLayer, 1000);
     function displayWeatherAnimation(gifUrl) {
       const weatherAnimationDiv = document.getElementById('weather-animation');
       weatherAnimationDiv.style.backgroundImage = `url(${gifUrl})`;

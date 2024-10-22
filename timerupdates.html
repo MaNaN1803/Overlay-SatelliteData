@@ -71,6 +71,10 @@
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     }).addTo(map);
 
+    var zoomEarthLayer = L.tileLayer('https://storage.googleapis.com/zoom-earth/{z}/{x}/{y}.png', {
+      attribution: '&copy; Zoom Earth',
+      opacity: 0.7
+    }).addTo(map);
     
     var cloudLayer = L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${new Date().getTime()}`, {
       attribution: 'Weather data &copy; OpenWeatherMap',

@@ -65,14 +65,13 @@
       // Format: https://rammb.cira.colostate.edu/data/himawari/{resolution}/{date}/{hour}/{minute}/{x}_{y}.png
       var date = dateTime.toISOString().split('T')[0].replace(/-/g, '/');
       var hour = dateTime.getUTCHours().toString().padStart(2, '0');
-      var minute = Math.floor(dateTime.getUTCMinutes() / 10) * 10; // Himawari-8 images are taken every 10 minutes.
+      var minute = Math.floor(dateTime.getUTCMinutes() / 10) * 10;
       minute = minute.toString().padStart(2, '0');
       
-      var resolution = zoom > 5 ? "1km" : "2km"; // Adjust resolution based on zoom level
+      var resolution = zoom > 5 ? "1km" : "2km";
       return `https://rammb.cira.colostate.edu/data/himawari/${resolution}/${date}/${hour}/${minute}/${x}_${y}.png`;
     }
 
-    // Create Himawari Layer
     var himawariLayer;
     function createHimawariLayer(dateTime) {
       var tileLayer = L.tileLayer(function (tileCoords) {
@@ -88,15 +87,14 @@
       return tileLayer;
     }
 
-    // Animation Control Variables
+
     var isPlaying = false;
-    var timeStep = 10 * 60 * 1000; // 10 minutes
+    var timeStep = 10 * 60 * 1000;
     var currentTime = new Date();
-    var startTime = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); // Start 24 hours ago
+    var startTime = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000);
     var endTime = currentTime;
     var timer;
-    
-    // Update Himawari Layer
+  
     function updateHimawariLayer() {
       if (himawariLayer) {
         map.removeLayer(himawariLayer);
@@ -105,7 +103,7 @@
       himawariLayer.addTo(map);
     }
 
-    // Play Animation
+
     function playAnimation() {
       if (isPlaying) {
         clearInterval(timer);
@@ -123,11 +121,10 @@
           updateHimawariLayer();
           updateTimeSelectors();
           currentTime = new Date(currentTime.getTime() + timeStep); 
-        }, 2000); // Adjust the speed of the animation (2 seconds per frame)
+        }, 2000); 
       }
     }
 
-    // Time Selectors Update
     function updateTimeSelectors() {
       document.getElementById('hourSelector').value = currentTime.getUTCHours().toString().padStart(2, '0');
       document.getElementById('minuteSelector').value = Math.floor(currentTime.getUTCMinutes() / 10) * 10;
@@ -135,13 +132,12 @@
 
     document.getElementById('playPauseButton').addEventListener('click', playAnimation);
 
-    // Populate Time Selectors
+
     function populateSelectors() {
       var daySelector = document.getElementById('daySelector');
       var hourSelector = document.getElementById('hourSelector');
       var minuteSelector = document.getElementById('minuteSelector');
 
-      // Populate hours (00 - 23)
       for (let i = 0; i < 24; i++) {
         let option = document.createElement('option');
         option.value = i.toString().padStart(2, '0');
@@ -149,7 +145,6 @@
         hourSelector.appendChild(option);
       }
 
-      // Populate minutes (00, 10, 20, 30, 40, 50)
       for (let i = 0; i < 60; i += 10) {
         let option = document.createElement('option');
         option.value = i.toString().padStart(2, '0');
@@ -157,7 +152,7 @@
         minuteSelector.appendChild(option);
       }
 
-      // Populate last 2 days
+  
       for (let i = 0; i < 2; i++) {
         let option = document.createElement('option');
         let day = new Date();
@@ -170,7 +165,6 @@
 
     populateSelectors();
 
-    // Initial Layer Load
     updateHimawariLayer();
 
   </script>

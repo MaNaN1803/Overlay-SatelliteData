@@ -63,19 +63,18 @@
     var himawariLayer;
     var isPlaying = false;
     var currentTime = new Date();
-    var timeStep = 10 * 60 * 1000; // Himawari-8 updates every 10 minutes
+    var timeStep = 10 * 60 * 1000; 
     var timer;
 
-    // Create the Himawari-8 tile layer
+
     function updateHimawariLayer(time) {
       var year = time.getUTCFullYear();
       var month = (time.getUTCMonth() + 1).toString().padStart(2, '0');
       var day = time.getUTCDate().toString().padStart(2, '0');
       var hour = time.getUTCHours().toString().padStart(2, '0');
-      var minute = Math.floor(time.getUTCMinutes() / 10) * 10; // Himawari updates every 10 minutes
+      var minute = Math.floor(time.getUTCMinutes() / 10) * 10;
       minute = minute.toString().padStart(2, '0');
 
-      // Himawari tile server URL
       var url = `https://himawari8.nict.go.jp/img/D531106/${year}/${month}/${day}/${hour}${minute}_0_0.png`;
 
       if (himawariLayer) {

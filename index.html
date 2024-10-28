@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Overlay Satellite Data</title>
+  <title>GIBS Cloud Coverage with Time Control</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <style>
     #map {
@@ -51,6 +51,9 @@
       background-size: contain;
       background-repeat: no-repeat;
     }
+    .leaflet-layer {
+      opacity: 0.7;
+    }
   </style>
 </head>
 <body>
@@ -61,190 +64,138 @@
     <select id="hourSelector"></select> : 
     <select id="minuteSelector"></select>
   </div>
-  <div id="weather-animation"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script>
-    var map = L.map('map').setView([20, 0], 2);
     
-    L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
-      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    var map = L.map('map').setView([20, 0], 3);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    
-    var cloudLayer = L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${new Date().getTime()}`, {
-      attribution: 'Weather data &copy; OpenWeatherMap',
-      opacity: 1.0
-    }).addTo(map);
-    
+    function formatDate(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    function createCloudLayer(date) {
+      return L.tileLayer('https://gibs-{s}.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + 
+        formatDate(date) + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg', {
+        subdomains: ['a', 'b', 'c'],
+        attribution: 'NASA GIBS',
+        maxZoom: 9,
+        format: 'jpg'
+      });
+    }
+
+    var currentCloudLayer = createCloudLayer(new Date());
+    currentCloudLayer.addTo(map);
+
     var isPlaying = false;
-var currentTime = new Date();
-// var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 0, 0, 0);
+    var currentTime = new Date();
+    var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 12, 0, 0);
+    var timeStep = 15 * 60 * 1000; 
+    var timer;
+    var loopTime = currentTime;
 
-startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 12, 0, 0); 
+    function updateCloudLayer() {
+      let selectedDay = document.getElementById('daySelector').value;
+      let selectedHour = document.getElementById('hourSelector').value;
+      let selectedMinute = document.getElementById('minuteSelector').value;
 
-var timeStep = 15 * 60 * 1000;
-var timer;
-var loopTime = currentTime;
+      let selectedDate = new Date(selectedDay);
+      selectedDate.setHours(parseInt(selectedHour), parseInt(selectedMinute), 0);
+      
+      if (currentCloudLayer) {
+        map.removeLayer(currentCloudLayer);
+      }
 
-function updateCloudLayer() {
-    let selectedDay = document.getElementById('daySelector').value;
-    let selectedHour = document.getElementById('hourSelector').value;
-    let selectedMinute = document.getElementById('minuteSelector').value;
+      currentCloudLayer = createCloudLayer(selectedDate);
+      currentCloudLayer.addTo(map);
+    }
 
-    let selectedDate = new Date(selectedDay);
-    selectedDate.setHours(parseInt(selectedHour), parseInt(selectedMinute), 0);
-    
-    let timestamp = selectedDate.getTime();
-    cloudLayer.setUrl(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${timestamp}`);
-}
+    function updateTimeSelectors() {
+      document.getElementById('hourSelector').value = currentTime.getHours().toString().padStart(2, '0');
+      document.getElementById('minuteSelector').value = currentTime.getMinutes().toString().padStart(2, '0');
+    }
 
-function updateTimeSelectors() {
-    document.getElementById('hourSelector').value = currentTime.getHours().toString().padStart(2, '0');
-    document.getElementById('minuteSelector').value = currentTime.getMinutes().toString().padStart(2, '0');
-}
-
-function playAnimation() {
-    if (isPlaying) {
+    function playAnimation() {
+      if (isPlaying) {
         clearInterval(timer);
         isPlaying = false;
-        document.getElementById('playPauseButton').innerHTML = "&#9658;"; 
-    } else {
+        document.getElementById('playPauseButton').innerHTML = "&#9658;";
+      } else {
         isPlaying = true;
         document.getElementById('playPauseButton').innerHTML = "&#10074;&#10074;";
         
         currentTime = startTime;
 
-        timer = setInterval(function () {
-            if (currentTime > loopTime) {
-                currentTime = startTime;
-            }
+        timer = setInterval(function() {
+          if (currentTime > loopTime) {
+            currentTime = startTime;
+          }
 
-            updateTimeSelectors();
-            updateCloudLayer();
+          updateTimeSelectors();
+          updateCloudLayer();
 
-            currentTime = new Date(currentTime.getTime() + timeStep); 
+          currentTime = new Date(currentTime.getTime() + timeStep);
         }, 2000);
+      }
     }
-}
 
-document.getElementById('playPauseButton').addEventListener('click', playAnimation);
+    function populateSelectors() {
+      var daySelector = document.getElementById('daySelector');
+      var hourSelector = document.getElementById('hourSelector');
+      var minuteSelector = document.getElementById('minuteSelector');
 
-function populateSelectors() {
-    var daySelector = document.getElementById('daySelector');
-    var hourSelector = document.getElementById('hourSelector');
-    var minuteSelector = document.getElementById('minuteSelector');
+      for (let i = 10; i >= 0; i--) {
+        let option = document.createElement('option');
+        let day = new Date();
+        day.setDate(day.getDate() - i);
+        option.value = formatDate(day);
+        option.text = day.toDateString();
+        daySelector.appendChild(option);
+      }
 
-    for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < 24; i++) {
         let option = document.createElement('option');
         option.value = i.toString().padStart(2, '0');
         option.text = i.toString().padStart(2, '0');
         hourSelector.appendChild(option);
-    }
+      }
 
-    for (let i = 0; i < 60; i += 15) { 
+      for (let i = 0; i < 60; i += 15) {
         let option = document.createElement('option');
         option.value = i.toString().padStart(2, '0');
         option.text = i.toString().padStart(2, '0');
         minuteSelector.appendChild(option);
-    }
-
-    for (let i = 0; i < 2; i++) {
-        let option = document.createElement('option');
-        let day = new Date();
-        day.setDate(day.getDate() - i);
-        option.value = day.toISOString().split('T')[0];
-        option.text = day.toDateString().split(' ').slice(0, 3).join(' ');
-        daySelector.appendChild(option);
-    }
-}
-
-populateSelectors();
-
-document.getElementById('daySelector').addEventListener('change', updateCloudLayer);
-document.getElementById('hourSelector').addEventListener('change', updateCloudLayer);
-document.getElementById('minuteSelector').addEventListener('change', updateCloudLayer);
-
-    const style = document.createElement('style');
-    style.textContent = `
-      .cloud-layer {
-        filter: brightness(2.2) contrast(1.5) hue-rotate(100deg) saturate(0.5);
       }
-    `;
-    document.head.appendChild(style);
-    
-    var weatherLayers = {
-      "Cloud Layer": cloudLayer,
-      "Zoom Earth Layer": zoomEarthLayer
-    };
-    
-    L.control.layers(null, weatherLayers, {collapsed: false}).addTo(map);
-    
-    var overlay;
-    function fetchSatelliteData(lat, lon) {
-      var apiKey = 'gv3D3PQfbGSUVz1WCJrNVlZpQVrH9lFalplR7be4';
-      var date = new Date().toISOString().split('T')[0];
-      var dim = 0.1;
-      var apiUrl = `https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&dim=${dim}&date=${date}&api_key=${apiKey}`;
+    }
 
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          if (data.url) {
-            var imageUrl = data.url;
-            if (overlay) {
-              map.removeLayer(overlay);
-            }
-            var imageBounds = [[lat - 0.1, lon - 0.1], [lat + 0.1, lon + 0.1]];
-            overlay = L.imageOverlay(imageUrl, imageBounds, { opacity: 0.7 });
-            overlay.addTo(map);
-          } else {
-            console.log('No satellite image data available for the given date.');
-          }
-        })
-        .catch(err => console.log('Error fetching satellite data:', err));
-    }
-    
-    function refreshCloudLayer() {
-      cloudLayer.setUrl(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=5fb3f9fe062384b079f52fbb76862f31&ts=${new Date().getTime()}`);
-    }
-    
-    setInterval(refreshCloudLayer, 15000);
-    
-    var initialLat = 28.6139;
-    var initialLon = 77.2090;
-    
-    fetchSatelliteData(initialLat, initialLon);
-    
-    map.on('click', function (e) {
-      fetchSatelliteData(e.latlng.lat, e.latlng.lng);
-    });
-    
+    document.getElementById('playPauseButton').addEventListener('click', playAnimation);
+    document.getElementById('daySelector').addEventListener('change', updateCloudLayer);
+    document.getElementById('hourSelector').addEventListener('change', updateCloudLayer);
+    document.getElementById('minuteSelector').addEventListener('change', updateCloudLayer);
+
+    populateSelectors();
+    updateCloudLayer();
+
     function initMap() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          function (position) {
+          function(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
-            map.setView([lat, lon], 10);
-            fetchSatelliteData(lat, lon);
+            map.setView([lat, lon], 6);
           },
-          function (error) {
-            if (error.code === error.PERMISSION_DENIED) {
-              alert("Please enable location access in your browser settings to see your current location.");
-            } else {
-              alert("Unable to retrieve your location. Please check your location settings.");
-            }
+          function(error) {
+            console.log("Geolocation error:", error);
           }
         );
-      } else {
-        alert("Geolocation is not supported by this browser.");
       }
     }
-    
-    window.onload = () => {
-      initMap();
-    };
+
+    window.onload = initMap;
   </script>
 </body>
 </html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Cloud Layer Animation</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+    #timeControl {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+    }
+    #timeControl button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="timeControl">
+    <button id="playPauseButton">&#9658;</button>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([20, 77], 4);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 10,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Initialize cloud layer
+    let cloudLayer;
+    let isPlaying = false;
+    let timer;
+
+    // Function to format date and time to match NOAA's RAMMB structure
+    function getCurrentTimestamp() {
+      const date = new Date();
+      const year = date.getUTCFullYear();
+      const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+      const day = String(date.getUTCDate()).padStart(2, '0');
+      const hour = String(date.getUTCHours()).padStart(2, '0');
+      const minute = String(date.getUTCMinutes()).padStart(2, '0');
+      const second = String(date.getUTCSeconds()).padStart(2, '0');
+      return `${year}${month}${day}${hour}${minute}${second}`;
+    }
+
+    function updateCloudLayer() {
+      const timestamp = getCurrentTimestamp();
+      const imageUrl = `https://rammb-slider.cira.colostate.edu/data/imagery/goes-16---full_disk/geocolor/${timestamp}/00/000_000.png`;
+
+      if (cloudLayer) {
+        map.removeLayer(cloudLayer);
+      }
+
+      cloudLayer = L.tileLayer(imageUrl, {
+        maxZoom: 8,
+        attribution: '&copy; NOAA/NASA GOES-R Satellite Imagery',
+        opacity: 0.7
+      }).addTo(map);
+    }
+
+    function playAnimation() {
+      if (isPlaying) {
+        clearInterval(timer);
+        isPlaying = false;
+        document.getElementById('playPauseButton').innerHTML = "&#9658;";
+      } else {
+        isPlaying = true;
+        document.getElementById('playPauseButton').innerHTML = "&#10074;&#10074;";
+        
+        // Update the cloud layer every 5 minutes (300000 ms)
+        timer = setInterval(updateCloudLayer, 300000);
+        updateCloudLayer(); // Initial load
+      }
+    }
+
+    document.getElementById('playPauseButton').addEventListener('click', playAnimation);
+
+    // Load initial layer
+    updateCloudLayer();
+  </script>
+</body>
+</html>

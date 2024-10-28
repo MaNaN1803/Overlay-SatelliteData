@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA GIBS Cloud Coverage</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+    #timeControl {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+    }
+    #timeControl select {
+      background: transparent;
+      border: none;
+      color: rgb(255, 255, 255);
+      font-size: 16px;
+      margin: 0 5px;
+      appearance: none;
+      outline: none;
+      cursor: pointer;
+    }
+    #timeControl button {
+      background: none;
+      border: none;
+      color: rgb(255, 255, 255);
+      font-size: 20px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .leaflet-layer {
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="timeControl">
+    <button id="playPauseButton">&#9658;</button>
+    <select id="daySelector"></select>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script>
+    // Initialize the map
+    var map = L.map('map').setView([20, 0], 3);
+
+    // Add base layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Function to format date as YYYY-MM-DD
+    function formatDate(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    // Create cloud layer
+    function createCloudLayer(date) {
+      return L.tileLayer('https://gibs-{s}.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + 
+        formatDate(date) + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg', {
+        subdomains: ['a', 'b', 'c'],
+        attribution: 'NASA GIBS',
+        maxZoom: 9,
+        format: 'jpg'
+      });
+    }
+
+    var currentCloudLayer = createCloudLayer(new Date());
+    currentCloudLayer.addTo(map);
+
+    var isPlaying = false;
+    var timer;
+
+    function updateCloudLayer() {
+      let selectedDate = new Date(document.getElementById('daySelector').value);
+      
+      // Remove current cloud layer
+      if (currentCloudLayer) {
+        map.removeLayer(currentCloudLayer);
+      }
+
+      // Add new cloud layer
+      currentCloudLayer = createCloudLayer(selectedDate);
+      currentCloudLayer.addTo(map);
+    }
+
+    function playAnimation() {
+      if (isPlaying) {
+        clearInterval(timer);
+        isPlaying = false;
+        document.getElementById('playPauseButton').innerHTML = "&#9658;";
+      } else {
+        isPlaying = true;
+        document.getElementById('playPauseButton').innerHTML = "&#10074;&#10074;";
+
+        timer = setInterval(function() {
+          let daySelector = document.getElementById('daySelector');
+          let currentIndex = daySelector.selectedIndex;
+          
+          if (currentIndex >= daySelector.options.length - 1) {
+            currentIndex = 0;
+          } else {
+            currentIndex++;
+          }
+          
+          daySelector.selectedIndex = currentIndex;
+          updateCloudLayer();
+        }, 1000);
+      }
+    }
+
+    function populateSelectors() {
+      var daySelector = document.getElementById('daySelector');
+      
+      // Populate last 10 days
+      for (let i = 10; i >= 0; i--) {
+        let option = document.createElement('option');
+        let day = new Date();
+        day.setDate(day.getDate() - i);
+        option.value = formatDate(day);
+        option.text = day.toDateString();
+        daySelector.appendChild(option);
+      }
+    }
+
+    // Event Listeners
+    document.getElementById('playPauseButton').addEventListener('click', playAnimation);
+    document.getElementById('daySelector').addEventListener('change', updateCloudLayer);
+
+    // Initialize
+    populateSelectors();
+    updateCloudLayer();
+  </script>
+</body>
+</html>

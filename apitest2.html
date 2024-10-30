@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satellite Imagery</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+   
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYWNjdXdlYXRoZXItaW5jIiwiYSI6ImNqeGtxeDc4ZDAyY2czcnA0Ym9ubzh0MTAifQ.HjSuXwG2bI05yFYmc0c9lw';
+
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-100, 40], 
+        zoom: 3 
+    });
+
+    async function fetchSatelliteLayers() {
+        const baseUrl = "https://api.accuweather.com/maps/v1/satellite/globalColor/zxy";
+        const apiKey = "de13920f574d420984d3080b1fa6132b"; 
+        const now = new Date();
+        
+        const satelliteLayers = [];
+
+        for (let i = 0; i <= 10; i++) {
+
+            const date = now.toISOString().slice(0, 10);
+            const hour = (now.getUTCHours() - Math.floor(i * 10 / 60)).toString().padStart(2, '0');
+            const timestamp = `${date}T${hour}:00:00Z`; 
+
+            satelliteLayers.push({
+                url: `${baseUrl}/${timestamp}/{z}/{x}/{y}.jpeg?apikey=${apiKey}&display_mode=20`,
+                timestamp: timestamp
+            });
+        }
+
+        return satelliteLayers;
+    }
+
+
+    async function updateMapWithSatelliteLayers() {
+        const satelliteLayers = await fetchSatelliteLayers();
+
+        satelliteLayers.forEach(layer => {
+           
+            map.addSource(`satellite-${layer.timestamp}`, {
+                type: 'raster',
+                tiles: [layer.url],
+                tileSize: 256
+            });
+
+            map.addLayer({
+                'id': `satellite-${layer.timestamp}`,
+                'type': 'raster',
+                'source': `satellite-${layer.timestamp}`,
+                'paint': {}
+            });
+        });
+    }
+
+   
+    updateMapWithSatelliteLayers();
+
+    setInterval(() => {
+        updateMapWithSatelliteLayers();
+    }, 6000);
+</script>
+
+</body>
+</html>

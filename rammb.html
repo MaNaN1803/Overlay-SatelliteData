@@ -48,12 +48,10 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Initialize cloud layer
     let cloudLayer;
     let isPlaying = false;
     let timer;
 
-    // Function to format date and time to match NOAA's RAMMB structure
     function getCurrentTimestamp() {
       const date = new Date();
       const year = date.getUTCFullYear();
@@ -89,15 +87,13 @@
         isPlaying = true;
         document.getElementById('playPauseButton').innerHTML = "&#10074;&#10074;";
         
-        // Update the cloud layer every 5 minutes (300000 ms)
         timer = setInterval(updateCloudLayer, 300000);
-        updateCloudLayer(); // Initial load
+        updateCloudLayer(); 
       }
     }
 
     document.getElementById('playPauseButton').addEventListener('click', playAnimation);
 
-    // Load initial layer
     updateCloudLayer();
   </script>
 </body>

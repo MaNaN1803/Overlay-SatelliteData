@@ -3,6 +3,41 @@
 
 <head>
 
+	<style>
+	
+		 .dropdown {
+            position: absolute;
+			z-index: 1000;
+           top: 40px; 
+            right: 7%; 
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+	</style>
+
 
 	<style>
 		@font-face {
@@ -80,12 +115,48 @@
   "postEventCta": true,
   "winterCenterMap": true
 };
-	var userCookie = {"cDate":"2024-10-22","isDarkMapStyle":false,"lang":"en-us","rl":["2625833"],"tp":"F","clk":"undefined","ccb":true,"userContentAffinity":{}};
-	var recentLocations = [{"adminArea":{"englishName":"Georgia","id":"GA","localizedName":"Georgia"},"alertCount":0,"country":{"englishName":"United States","id":"US","localizedName":"United States"},"icon":35,"key":"2625833","localizedName":"Downtown","postalCode":"30303","temp":"61°","realFeel":"61°","isDayTime":false}];
-	var currentLocation = {"plumeLabsLink":"https://air.plumelabs.com/air-quality-in-downtown-aw-2625833","dma":{"englishName":"Atlanta, GA","id":"524","localizedName":"Atlanta, GA"},"englishName":"Downtown","gmtOffset":-4.0,"hasAlerts":true,"hasForecastConfidence":true,"hasPollen":true,"hasMinuteCast":true,"hasFutureRadar":true,"lat":33.759,"lon":-84.391,"mediaRegion":"SE","region":{"englishName":"North America","id":"NAM","localizedName":"North America"},"timeZone":"EDT","timeZoneCode":"EDT","administrativeArea":{"englishName":"Georgia","id":"GA","localizedName":"Georgia"},"country":{"englishName":"United States","id":"US","localizedName":"United States"},"key":"2625833","localizedName":"Downtown","primaryPostalCode":"30303","source":"AccuWeather"};
+var userCookie = {"cDate":"2024-10-22","isDarkMapStyle":false,"lang":"en-us","rl":["2625833"],"tp":"F","clk":"undefined","ccb":true,"userContentAffinity":{}};
+var recentLocations = [{"adminArea":{"englishName":"Delhi","id":"DL","localizedName":"Delhi"},"alertCount":0,"country":{"englishName":"India","id":"IN","localizedName":"India"},"icon":35,"key":"202396","localizedName":"New Delhi","postalCode":"110001","temp":"82°","realFeel":"89°","isDayTime":true}];
+var currentLocation = {
+    "plumeLabsLink":"https://air.plumelabs.com/air-quality-in-delhi-aw-202396",
+    "dma":{"englishName":"New Delhi, DL","id":"202396","localizedName":"New Delhi, DL"},
+    "englishName":"New Delhi",
+    "gmtOffset":5.5,
+    "hasAlerts":true,
+    "hasForecastConfidence":true,
+    "hasPollen":true,
+    "hasMinuteCast":true,
+    "hasFutureRadar":true,
+    "lat":28.6139,
+    "lon":77.2090,
+    "mediaRegion":"IN",
+    "region":{"englishName":"Asia","id":"ASI","localizedName":"Asia"},
+    "timeZone":"IST",
+    "timeZoneCode":"IST",
+    "administrativeArea":{"englishName":"Delhi","id":"DL","localizedName":"Delhi"},
+    "country":{"englishName":"India","id":"IN","localizedName":"India"},
+    "key":"202396",
+    "localizedName":"New Delhi",
+    "primaryPostalCode":"110001",
+    "source":"AccuWeather"
+};
 	var serverAdsOnPage = [{"config":{"responsiveSizes":[{"window":[1024,0],"sizes":["fluid",[980,120],[980,90],[970,250],[970,90],[950,90],[930,180],[750,100],[750,300],[750,200],[728,90]]},{"window":[768,0],"sizes":["fluid",[728,90],[468,60],[320,50],[300,50]]},{"window":[0,0],"sizes":[[320,100],[320,50],[300,250],[300,100],[300,50],[250,360],[240,400]]}],"bids":[{"bidder":"google","params":{"sizes":"970x250,728x90,fluid","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"appnexus","params":{"placementId":29838031,"allowSmallerSizes":"FALSE","keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/top/news_info/satellite"]},"reserve":2.0,"position":"above","supplyType":"web","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"rubicon","params":{"accountId":12562,"siteId":135890,"zoneId":2841914,"position":"atf","userId":"3ff1f9e5xd0dex4904xa7abxc73967ca7f62","floor":2.0,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"triplelift","params":{"inventoryCode":"Acccuweather_Prebid_web_top_highperformance_970x250","floor":2.0,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"pubmatic","params":{"publisherId":"34576","adSlot":"Web_Top","lat":"33.76","lon":"-84.39","kadfloor":"2.00","currency":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"grid","params":{"uid":6028,"keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/top/news_info/satellite"]},"bidFloor":2.0,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"yahoossp","params":{"dcn":"8a9691d3017474551cc955a9acbd0027","pos":"web_hb_top_1","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"ix","params":{"siteId":"974818","bidFloor":2.0,"bidFloorCur":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"openx","params":{"delDomain":"accuweather-d.openx.net","unit":"539580665","customParams":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/top/news_info/satellite"]},"customFloor":2.0,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"ttd","params":{"supplySourceId":"accuweather","publisherId":"1","bidfloor":4.25,"currency":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"google","params":{"sizes":"970x250,728x90,fluid","Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"appnexus","params":{"placementId":18044795,"allowSmallerSizes":"FALSE","keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/top/news_info/satellite"]},"reserve":7.0,"position":"above","supplyType":"web","Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"rubicon","params":{"accountId":12562,"siteId":135890,"zoneId":1518598,"position":"atf","userId":"3ff1f9e5xd0dex4904xa7abxc73967ca7f62","floor":7.0,"Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"triplelift","params":{"inventoryCode":"Acccuweather_Prebid_web_top_BIN","floor":7.0,"Is_Buy_It_Now":true},"isBuyItNow":true}]},"adType":"top","viewport":"tablet desktop","adDivId":"top","adUnitCode":"/6581/web/us/top/news_info/satellite","upr":4.0,"includeInSRA":true},{"config":{"bids":[{"bidder":"google","params":{"sizes":"oop","Is_Buy_It_Now":false},"isBuyItNow":false}]},"adType":"oop","adDivId":"oop","adUnitCode":"/6581/web/us/oop/news_info/satellite","upr":0.05,"includeInSRA":true},{"config":{"bids":[{"bidder":"google","params":{"sizes":"interstitial","Is_Buy_It_Now":false},"isBuyItNow":false}]},"adType":"interstitial","adDivId":"interstitial","adUnitCode":"/6581/web/us/interstitial/news_info/satellite","upr":11.0,"includeInSRA":false},{"config":{"sizes":["fluid",[2,2],[300,250]],"bids":[{"bidder":"google","params":{"sizes":"300x250,fluid,2x2","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"triplelift","params":{"inventoryCode":"accuweather_d_weather_native_pbjs","floor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false}]},"adType":"native","adDivId":"native","adUnitCode":"/6581/web/us/native/news_info/satellite","upr":0.6,"includeInSRA":true},{"config":{"responsiveSizes":[{"window":[1024,0],"sizes":["fluid",[300,250],[300,600],[250,360],[240,400],[160,600]]},{"window":[768,0],"sizes":["fluid",[300,250],[300,600],[300,100],[250,360],[240,400],[160,600]]},{"window":[0,0],"sizes":[]}],"bids":[{"bidder":"google","params":{"sizes":"300x250,300x600,160x600,120x600,fluid","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"appnexus","params":{"placementId":29838030,"allowSmallerSizes":"FALSE","keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/top_right/news_info/satellite"]},"reserve":2.0,"position":"above","supplyType":"web","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"rubicon","params":{"accountId":12562,"siteId":135890,"zoneId":2841912,"position":"atf","userId":"3ff1f9e5xd0dex4904xa7abxc73967ca7f62","floor":2.0,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"triplelift","params":{"inventoryCode":"Acccuweather_Prebid_web_topright_highperformance_300x600","floor":2.0,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"pubmatic","params":{"publisherId":"34576","adSlot":"Web_TopRight","lat":"33.76","lon":"-84.39","kadfloor":"2.00","currency":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"grid","params":{"uid":6029,"keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/top_right/news_info/satellite"]},"bidFloor":2.0,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"yahoossp","params":{"dcn":"8a9691d3017474551cc955a9acbd0027","pos":"web_hb_top_2","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"ix","params":{"siteId":"974819","bidFloor":2.0,"bidFloorCur":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"openx","params":{"delDomain":"accuweather-d.openx.net","unit":"539580668","customParams":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/top_right/news_info/satellite"]},"customFloor":2.0,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"ttd","params":{"supplySourceId":"accuweather","publisherId":"1","bidfloor":3.0,"currency":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"google","params":{"sizes":"300x250,300x600,160x600,120x600,fluid","Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"appnexus","params":{"placementId":18044796,"allowSmallerSizes":"FALSE","keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/top_right/news_info/satellite"]},"reserve":6.5,"position":"above","supplyType":"web","Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"rubicon","params":{"accountId":12562,"siteId":135890,"zoneId":2745916,"position":"atf","userId":"3ff1f9e5xd0dex4904xa7abxc73967ca7f62","floor":6.5,"Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"triplelift","params":{"inventoryCode":"Acccuweather_Prebid_web_topright_BIN","floor":6.5,"Is_Buy_It_Now":true},"isBuyItNow":true}]},"adType":"top_right","viewport":"tablet desktop","adDivId":"top_right","adUnitCode":"/6581/web/us/top_right/news_info/satellite","upr":2.75,"includeInSRA":true},{"config":{"responsiveSizes":[{"window":[1024,0],"sizes":["fluid",[300,250],[300,600],[250,360],[240,400],[300,251],[300,601],[160,600]]},{"window":[768,0],"sizes":["fluid",[300,250],[300,600],[300,100],[250,360],[240,400],[300,251],[300,601],[160,600]]},{"window":[0,0],"sizes":[]}],"bids":[{"bidder":"google","params":{"sizes":"300x250,300x600,160x600,120x600,fluid","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"appnexus","params":{"placementId":12729478,"allowSmallerSizes":"FALSE","keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/bottom_right/news_info/satellite"]},"reserve":1.2,"position":"below","supplyType":"web","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"rubicon","params":{"accountId":12562,"siteId":135890,"zoneId":2745918,"position":"btf","userId":"3ff1f9e5xd0dex4904xa7abxc73967ca7f62","floor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"triplelift","params":{"inventoryCode":"accuweather_d_bottomright_rectangle_pbjs","floor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"pubmatic","params":{"publisherId":"34576","adSlot":"Web_BottomRight","lat":"33.76","lon":"-84.39","kadfloor":"1.20","currency":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"grid","params":{"uid":6031,"keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/bottom_right/news_info/satellite"]},"bidFloor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"yahoossp","params":{"dcn":"8a9691d3017474551cc955a9acbd0027","pos":"web_hb_bottom_2","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"ix","params":{"siteId":"197765","bidFloor":1.2,"bidFloorCur":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"openx","params":{"delDomain":"accuweather-d.openx.net","unit":"539580673","customParams":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/bottom_right/news_info/satellite"]},"customFloor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"google","params":{"sizes":"300x250,300x600,160x600,120x600,fluid","Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"appnexus","params":{"placementId":29006657,"allowSmallerSizes":"FALSE","keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/bottom_right/news_info/satellite"]},"reserve":4.0,"position":"below","supplyType":"web","Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"rubicon","params":{"accountId":12562,"siteId":135890,"zoneId":2745914,"position":"btf","userId":"3ff1f9e5xd0dex4904xa7abxc73967ca7f62","floor":4.0,"Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"triplelift","params":{"inventoryCode":"Acccuweather_Prebid_Web_bottomright_BIN","floor":4.0,"Is_Buy_It_Now":true},"isBuyItNow":true}]},"adType":"bottom_right","viewport":"tablet desktop","adDivId":"bottom_right","adUnitCode":"/6581/web/us/bottom_right/news_info/satellite","upr":1.5,"includeInSRA":true},{"config":{"responsiveSizes":[{"window":[1024,0],"sizes":["fluid",[980,120],[980,90],[970,251],[970,250],[970,90],[950,90],[930,180],[750,100],[750,200],[750,300],[728,91],[728,90]]},{"window":[768,0],"sizes":["fluid",[728,91],[728,90],[468,60],[320,51],[320,50],[300,51],[300,50]]},{"window":[0,0],"sizes":["fluid",[320,100],[320,51],[300,250],[300,600],[336,280],[320,50],[300,50],[300,100],[300,51],[300,251],[300,100],[250,360],[240,400]]}],"bids":[{"bidder":"google","params":{"sizes":"970x250,728x90,fluid","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"appnexus","params":{"placementId":12729477,"allowSmallerSizes":"FALSE","keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/bottom/news_info/satellite"]},"reserve":1.2,"position":"below","supplyType":"web","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"rubicon","params":{"accountId":12562,"siteId":135890,"zoneId":640476,"position":"btf","userId":"3ff1f9e5xd0dex4904xa7abxc73967ca7f62","floor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"triplelift","params":{"inventoryCode":"accuweather_d_bottom_leaderboard_pbjs","floor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"pubmatic","params":{"publisherId":"34576","adSlot":"Web_Bottom","lat":"33.76","lon":"-84.39","kadfloor":"1.20","currency":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"grid","params":{"uid":6030,"keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/bottom/news_info/satellite"]},"bidFloor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"yahoossp","params":{"dcn":"8a9691d3017474551cc955a9acbd0027","pos":"web_hb_bottom_1","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"ix","params":{"siteId":"197764","bidFloor":1.2,"bidFloorCur":"USD","Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"openx","params":{"delDomain":"accuweather-d.openx.net","unit":"539580672","customParams":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/bottom/news_info/satellite"]},"customFloor":1.2,"Is_Buy_It_Now":false},"isBuyItNow":false},{"bidder":"google","params":{"sizes":"970x250,728x90,fluid","Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"appnexus","params":{"placementId":29006645,"allowSmallerSizes":"FALSE","keywords":{"fdate":["20241030"],"advelvet":["4"],"pgview":["5"],"partner":["accuweather"],"ufdb":["GATL1"],"country":["US"],"state":["GA"],"dma":["524"],"wx_seg":["101104100","100112103","101108100","102103101","110102101","999100000","102100100","108105100","110100100","114105104","101101101","100109104","108102102","101103100","100108101","101105100","104100104","100113102","100106103","100111103","108103102","102101100","108104104","109101100","102102101","101100100","114104103","108101104","107100103","114102104","108100104","114101104","101106100","101107100","109100104","103100104","104101103","109103104","107101103","101102100","103101104","109102104","114100104","114103104","100109106","102104100","105100104","109105102","109106102","109104102","110101101"],"cuhd":["71"],"cuhi":["65"],"cuuv":["0"],"cuwd":["2"],"cuwx":["35"],"realfeel":["60"],"pt":["102"],"adunit":["/6581/web/us/bottom/news_info/satellite"]},"reserve":3.25,"position":"below","supplyType":"web","Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"rubicon","params":{"accountId":12562,"siteId":135890,"zoneId":2745912,"position":"btf","userId":"3ff1f9e5xd0dex4904xa7abxc73967ca7f62","floor":3.25,"Is_Buy_It_Now":true},"isBuyItNow":true},{"bidder":"triplelift","params":{"inventoryCode":"Acccuweather_Prebid_Web_bottom_BIN","floor":3.25,"Is_Buy_It_Now":true},"isBuyItNow":true}]},"adType":"bottom","adDivId":"bottom","adUnitCode":"/6581/web/us/bottom/news_info/satellite","upr":0.6,"includeInSRA":true}];
 	var weatherEvents = null;
-	var userData = {"city":"MUMBAI","continent":1,"countryCode":"IN","county":"","lat":18.98,"lon":72.83,"regionCode":"MH","throughput":"vhigh","bw":"5000","networkType":"","network":"","zipCodes":[{"primary":""}],"device":{"browserVersion":"130"}};
+	var userData = {
+    "city":"NEW DELHI",
+    "continent":1,
+    "countryCode":"IN",
+    "county":"",
+    "lat":28.6139,
+    "lon":77.2090,
+    "regionCode":"DL",
+    "throughput":"vhigh",
+    "bw":"5000",
+    "networkType":"",
+    "network":"",
+    "zipCodes":[{"primary":"110001"}],
+    "device":{"browserVersion":"130"}
+};
 	var isUserCountryEEA = false;
 	var showPrivacyPolicyBanner = false;
 	var mapbox={token:'pk.eyJ1IjoiYWNjdXdlYXRoZXItaW5jIiwiYSI6ImNqeGtxeDc4ZDAyY2czcnA0Ym9ubzh0MTAifQ.HjSuXwG2bI05yFYmc0c9lw',style:'mapbox://styles/accuweather-inc/cjknc24na2o5u2sqoy0t8ku8a'};
@@ -1265,7 +1336,26 @@ function getUserContentAffinity(categories) {
 <body >
 	
 <div id="satellite-container-legacy" class="map-container-legacy content-module nfl-variant has-playbar full-mobile-width">
-	
+	<div class="dropdown">
+        <button>all files</button>
+        <div class="dropdown-content">
+            <a href="justclouds.html">Just Clouds</a>
+            <a href="map.html">Map</a>
+            <a href="apitest.html">apitest</a>
+            <a href="index.html">apitest2</a>
+            <a href="complete.html">complete</a>
+            <a href="gibscombine.html">gibscombine</a>
+            <a href="himawaricombine.html">himawaricombine</a>
+            <a href="meteomatics.html">meteomatics</a>
+            <a href="nasagibs.html">nasagibs</a>
+            <a href="oldindex.html">oldindex</a>
+            <a href="previndexwithcloudlayer.html">preindexwithclouds</a>
+            <a href="rammb.html">rammb</a>
+            <a href="test.html">test</a>
+            <a href="timerupdates.html">timerupdate</a>
+            <a href="index.html">home</a>
+        </div>
+    </div>
 	<div class="map-canvas full-mobile-width">
 		
 		
@@ -1290,6 +1380,18 @@ function getUserContentAffinity(categories) {
 
 <div class="map-canvas-inner"></div>
 <div class="full-screen-button"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wait a short time to ensure all scripts have loaded
+        setTimeout(function() {
+            var fullScreenButton = document.querySelector('.full-screen-button');
+            if (fullScreenButton) {
+                // Simulate a click on the full-screen button
+                fullScreenButton.click();
+            }
+        }, 1000); // Wait for 1 second before clicking
+    });
+</script>
 
 <div class="close-button">
 	
@@ -1305,8 +1407,14 @@ function getUserContentAffinity(categories) {
 	window.mapboxAccessToken = 'pk.eyJ1IjoiYWNjdXdlYXRoZXItaW5jIiwiYSI6ImNqeGtxeDc4ZDAyY2czcnA0Ym9ubzh0MTAifQ.HjSuXwG2bI05yFYmc0c9lw';
 
 	var mapOptions = window.mapOptions || {};
-	mapOptions['satellite'] = {"center":[-83.64869689941406,32.98659896850586],"zoom":5.0,"style":"mapbox://styles/accuweather-inc/cjknc24na2o5u2sqoy0t8ku8a","fadeDuration":0,"theme":"Default"};
-	var isDarkMap = false;
+	mapOptions['satellite'] = {
+    "center":[77.2090, 28.6139],  
+    "zoom":5.0,
+    "style":"mapbox://styles/accuweather-inc/cjknc24na2o5u2sqoy0t8ku8a",
+    "fadeDuration":0,
+    "theme":"Default"
+};
+	var isDarkMap = true;
 	var mapboxLightStyle = 'mapbox://styles/accuweather-inc/cjknc24na2o5u2sqoy0t8ku8a';
 	var mapboxDarkStyle = 'mapbox://styles/accuweather-inc/cjknbnj4m04hn2snt04lpb2v5';
 </script>
@@ -1319,7 +1427,39 @@ function getUserContentAffinity(categories) {
 </div>
 
 <script>
-	var satelliteLayers = [{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T05:20:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T05:20:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T05:30:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T05:30:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T05:40:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T05:40:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T05:50:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T05:50:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T06:00:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T06:00:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T06:10:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T06:10:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T06:20:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T06:20:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T06:30:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T06:30:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T06:40:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T06:40:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T06:50:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T06:50:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T07:00:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T07:00:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T07:10:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T07:10:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T07:20:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T07:20:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T07:30:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T07:30:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T07:40:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T07:40:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T07:50:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T07:50:00Z"},{"url":"https://api.accuweather.com/maps/v1/satellite/globalColor/zxy/2024-10-30T08:00:00Z/{z}/{x}/{y}.jpeg?apikey=de13920f574d420984d3080b1fa6132b\u0026display_mode=20","timestamp":"2024-10-30T08:00:00Z"}];
+    var satelliteLayers = (function() {
+        const baseUrl = "https://api.accuweather.com/maps/v1/satellite/globalColor/zxy";
+        const apiKey = "de13920f574d420984d3080b1fa6132b";
+        
+        const now = new Date();
+        const istOffset = 5.5 * 60 * 60 * 1000; 
+        const istNow = new Date(now.getTime() + istOffset);
+        
+        const startTime = new Date(istNow.getFullYear(), istNow.getMonth(), istNow.getDate(), 12, 0, 0);
+        startTime.setTime(startTime.getTime() - istOffset);
+        
+        const layers = [];
+
+        while (startTime <= now) {
+            const istTime = new Date(startTime.getTime() + istOffset);
+            const date = startTime.toISOString().slice(0, 10);
+            const hour = startTime.getUTCHours().toString().padStart(2, '0');
+            const minute = startTime.getUTCMinutes().toString().padStart(2, '0');
+            const timestamp = `${date}T${hour}:${minute}:00Z`;
+
+            const timeString = istTime.getHours().toString().padStart(2, '0') + ':' + 
+                             istTime.getMinutes().toString().padStart(2, '0');
+
+            layers.push({
+                url: `${baseUrl}/${timestamp}/{z}/{x}/{y}.jpeg?apikey=${apiKey}&display_mode=20`,
+                timestamp: timeString
+            });
+
+            startTime.setMinutes(startTime.getMinutes() + 15);
+        }
+
+        return layers;
+    })();
 </script>
 	
 	

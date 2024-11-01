@@ -1431,12 +1431,11 @@ function getUserContentAffinity(categories) {
         const baseUrl = "https://api.accuweather.com/maps/v1/satellite/globalColor/zxy";
         const apiKey = "de13920f574d420984d3080b1fa6132b";
         
-        const now = new Date();
+        const endTime = new Date(Date.now() - (2.5 * 60 * 60 * 1000));
         const layers = [];
 
-        // Generate 16 layers, each 10 minutes apart
         for (let i = 0; i < 16; i++) {
-            const layerTime = new Date(now.getTime() - (15 - i) * 10 * 60 * 1000);
+            const layerTime = new Date(endTime.getTime() - (150 - i * 10) * 60 * 1000);
             const date = layerTime.toISOString().slice(0, 10);
             const hour = layerTime.getUTCHours().toString().padStart(2, '0');
             const minute = layerTime.getUTCMinutes().toString().padStart(2, '0');
@@ -1451,7 +1450,6 @@ function getUserContentAffinity(categories) {
         return layers;
     })();
 </script>
-	
 	
 	<script>
 		window.collapseConnatix = () => {
